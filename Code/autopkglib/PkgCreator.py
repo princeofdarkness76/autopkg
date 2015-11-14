@@ -63,6 +63,10 @@ class PkgCreator(Processor):
             "description": "Description of interesting results."
         }
     }
+    report = {
+        "title": "The following new packages were built:",
+        "trigger_variable": "new_package_request",
+    }
 
     def find_path_for_relpath(self, relpath):
         '''Searches for the relative path.
@@ -233,6 +237,11 @@ class PkgCreator(Processor):
     def main(self):
         '''Package something!'''
         self.package()
+        self.report["items"] = {
+            "Identifier": self.env["pkg_request"]["id"],
+            "Version": self.env["pkg_request"]["version"],
+            "Pkg path": self.env["pkg_path"]
+        }
 
 
 if __name__ == '__main__':

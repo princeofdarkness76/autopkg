@@ -95,6 +95,10 @@ class URLDownloader(Processor):
             "description": "Description of interesting results."
         },
     }
+    report = {
+        "title": "The following new items were downloaded:",
+        "trigger_variable": "download_changed",
+    }
 
     def main(self):
         # clear any pre-exising summary result
@@ -240,6 +244,10 @@ class URLDownloader(Processor):
                     'download_path': pathname,
                 }
             }
+
+            self.report["items"] = {
+                "Path": self.env["pathname"]
+                }
 
         except BaseException as err:
             raise ProcessorError(

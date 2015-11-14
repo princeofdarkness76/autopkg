@@ -519,6 +519,43 @@ def get_recipe_repo(git_path):
     return None
 
 
+<<<<<<< HEAD
+=======
+def print_new_imports(new_imports):
+    '''Print new Munki imports in a table format'''
+    log("    %-24s %-16s %-32s %s" % (
+        "Name", "Version", "Catalogs", "Pkginfo Path"))
+    log("    %-24s %-16s %-32s %s" % (
+        "----", "-------", "--------", "------------"))
+    for item in new_imports:
+        log("    %-24s %-16s %-32s %s" % (
+            item["name"], item["version"], ", ".join(item["catalogs"]),
+            item["pkginfo_path"].partition("pkgsinfo/")[2]))
+
+
+def print_new_packages(new_packages):
+    '''Print new pkg builds in a table format'''
+    log("    %-24s %-16s %-32s" % (
+        "Identifier", "Version", "Pkg path"))
+    log("    %-24s %-16s %-32s" % (
+        "----------", "-------", "--------"))
+    for item in new_packages:
+        identifier, version = "N/A", "N/A"
+        if "id" in item.keys():
+            identifier = item["id"]
+        if "version" in item.keys():
+            version = item["version"]
+        log("    %-24s %-16s %-32s" % (
+            identifier, version, item["pkg_path"]))
+
+
+def print_run_summary(summary):
+    '''Print an auto-formatted, human-readable summary
+    in a table format. Not implemented.'''
+    pass
+
+
+>>>>>>> origin/summary-data-in-processors
 def write_plist_exit_on_fail(plist_dict, path):
     '''Writes a dict to a new plist at path, exits the program
     if the write fails.'''
@@ -1567,6 +1604,19 @@ def run_recipes(argv):
 
     if not summary_results:
         log("\nNothing downloaded, packaged or imported.")
+
+
+    summary = {}
+    for item in autopackager.results:
+        if item.get("Report"):
+            if item["Processor"] not in summary.keys():
+                summary[item["Processor"]] = {}
+                summary[item["Processor"]]["title"] = item["Report"]["title"]
+                summary[item["Processor"]]["items"] = []
+            summary[item["Processor"]]["items"].append(item["Report"]["items"])
+
+    # Just a pprint for now
+    pprint.pprint(summary)
 
     # save report plist with the summary data
     if options.report_plist:

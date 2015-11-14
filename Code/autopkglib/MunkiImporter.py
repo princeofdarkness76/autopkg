@@ -101,6 +101,10 @@ class MunkiImporter(Processor):
             "description": "Description of interesting results."
         },
     }
+    report = {
+        "title": "The following new items were imported:",
+        "trigger_variable": "pkginfo_repo_path",
+    }
     description = __doc__
 
     def make_catalog_db(self):
@@ -501,6 +505,14 @@ class MunkiImporter(Processor):
 
         self.output("Copied pkginfo to %s" % self.env["pkginfo_repo_path"])
         self.output("Copied pkg to %s" % self.env["pkg_repo_path"])
+
+        self.report["items"] = {
+            "Name": self.env["munki_info"]["name"],
+            "Version": self.env["munki_info"]["version"],
+            "Catalogs" : ", ".join(self.env["munki_info"]["catalogs"]),
+            "Pkginfo Path" : self.env["pkginfo_repo_path"]\
+                            .partition("pkgsinfo/")[2],
+            }
 
 if __name__ == "__main__":
     PROCESSOR = MunkiImporter()

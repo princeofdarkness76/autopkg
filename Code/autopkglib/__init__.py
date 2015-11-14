@@ -491,9 +491,19 @@ class AutoPackager(object):
                 # pretty print output variables
                 pprint.pprint({"Output": output_dict})
 
-            self.results.append({'Processor': step["Processor"],
-                                 'Input': input_dict,
-                                 'Output': output_dict})
+            run_results = {'Processor': step["Processor"],
+                           'Input': input_dict,
+                           'Output': output_dict}
+
+            # build a report if our trigger was set
+            report = {}
+            if hasattr(processor, "report"):
+                if output_dict.get(processor.report["trigger_variable"]):
+                    report["title"] = processor.report.get("title")
+                    report["items"] = processor.report.get("items")
+            run_results["Report"] = report
+
+            self.results.append(run_results)
 
             if self.env.get("stop_processing_recipe"):
                 # processing should stop now
