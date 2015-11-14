@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# Copyright 2010 Per Olofsson
+# Copyright 2013 Per Olofsson
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+<<<<<<< HEAD
 """Core/shared autopkglib functions"""
 
 import os
@@ -630,3 +631,9 @@ def processor_names():
 # when importing autopkglib, need to also import all the processors
 # in this same directory
 import_processors()
+=======
+BUNDLE_ID = "com.googlecode.autopkg"
+
+import processors
+import outputhandlers
+>>>>>>> autopkg/outputhandlers
